@@ -9,7 +9,6 @@ npm run dev
 ### Push to git
 git add .
 git commit -m "first commit"
-git push .. does not work. Found that the account has been flaggeg by github which probably locked it. Created a ticket with github. BTW, this is an interesting web https://medium.com/@aklson_DS/how-to-properly-setup-your-github-repository-mac-version-3a8047b899e5
 
 ### Add Vitest
 npm i --save-dev vitest 
