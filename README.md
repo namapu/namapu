@@ -1,4 +1,4 @@
-# NAMAPU: The smart way to take notes and unleash creativity  
+# NAMAPU: Smart way to take notes and unleash creativity  
 
 ### Create new project using Vite
 
