@@ -41,8 +41,8 @@ button {
   border-radius: 2em;
   border: 1px solid transparent;
   padding: 0.3em 1em;
-  font-size: 1em;
-  font-weight: 500;
+  font-size: .8rem;
+  font-weight: 400;
   font-family: inherit;
   background-color: #669;
   color:rgba(255, 255, 255, 0.87);
