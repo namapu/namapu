@@ -1,0 +1,70 @@
+// import AppState from './app-state';
+import Doc from "./doc";
+
+export default
+class Nav {
+  readonly navElem: HTMLElement;
+  readonly doc: Doc;
+
+  constructor(navElem: HTMLElement, doc: Doc) {
+    this.navElem = navElem;
+    this.doc = doc;
+  }
+ 
+  render() {
+    this.navElem.innerHTML = 
+      `
+      <nav style="position:fixed; left: 0.5em; top:0.5em">
+        <button id='btn-new'  onclick="this.handleClick_New()">New</button>
+        <button id='btn-load' onclick="handleClick_Load()">Load</button>
+        <button id='btn-save' onclick="handleClick_Save()">Save</button>
+        <button id='btn-dele' onclick="handleClick_Delete()">Delete</button>
+        <button id='btn-undo' onclick="handleClick_Undo()">Undo</button>
+        <button id='btn-redo' onclick="handleClick_Redo()">Redo</button>
+      </nav>
+      `;
+      const btnNew = document.querySelector<HTMLElement>('#btn-new') as HTMLElement;
+      if (btnNew) btnNew.onclick = this.handleClick_New;
+
+      const btnLoad = document.querySelector<HTMLElement>('#btn-load') as HTMLElement;
+      if (btnLoad) btnLoad.onclick = this.handleClick_Load;
+      
+      const btnSave = document.querySelector<HTMLElement>('#btn-save') as HTMLElement;
+      if (btnSave) btnSave.onclick = this.handleClick_Save;
+      
+      const btnDelete = document.querySelector<HTMLElement>('#btn-dele') as HTMLElement;
+      if (btnDelete) btnDelete.onclick = this.handleClick_Delete;
+
+      const btnUndo = document.querySelector<HTMLElement>('#btn-undo') as HTMLElement;
+      if (btnUndo) btnUndo.onclick = this.handleClick_Undo;
+      
+      const btnRedo = document.querySelector<HTMLElement>('#btn-redo') as HTMLElement;
+      if (btnRedo) btnRedo.onclick = this.handleClick_Redo;
+      
+  }
+
+  private handleClick_New = () => {
+    console.log("handleClick_New");
+  }
+
+  private handleClick_Load = () => {
+    console.log("handleClick_Load");
+  }
+
+  private handleClick_Save = () => {
+    console.log("handleClick_Save");
+  }
+
+  private handleClick_Undo = () => {
+    console.log("handleClick_Undo");
+  }
+
+  private handleClick_Redo = () => {
+    console.log("handleClick_Redo");
+  }
+
+  private handleClick_Delete = () => {
+    console.log("handleClick_Delete");
+  }
+
+}
