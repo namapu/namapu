@@ -1,26 +1,26 @@
 // import AppState from './app-state';
-import Doc from "./doc";
+// import Doc from "./doc";
 
 export default
 class Nav {
   readonly navElem: HTMLElement;
-  readonly doc: Doc;
+  // readonly doc: Doc;
 
-  constructor(navElem: HTMLElement, doc: Doc) {
+  constructor(navElem: HTMLElement) {
     this.navElem = navElem;
-    this.doc = doc;
+    // this.doc = doc;
   }
  
   render() {
     this.navElem.innerHTML = 
       `
       <nav style="position:fixed; left: 0.5em; top:0.5em">
-        <button id='btn-new'  onclick="this.handleClick_New()">New</button>
-        <button id='btn-load' onclick="handleClick_Load()">Load</button>
-        <button id='btn-save' onclick="handleClick_Save()">Save</button>
-        <button id='btn-dele' onclick="handleClick_Delete()">Delete</button>
-        <button id='btn-undo' onclick="handleClick_Undo()">Undo</button>
-        <button id='btn-redo' onclick="handleClick_Redo()">Redo</button>
+        <button id='btn-new' >New</button>
+        <button id='btn-load'>Load</button>
+        <button id='btn-save'>Save</button>
+        <button id='btn-dele'>Delete</button>
+        <button id='btn-undo'>Undo</button>
+        <button id='btn-redo'>Redo</button>
       </nav>
       `;
       const btnNew = document.querySelector<HTMLElement>('#btn-new') as HTMLElement;
