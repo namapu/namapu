@@ -21,7 +21,7 @@ export type TMindmap = {
     frames: Array<TFrame>
 }
 
-export type TDoc = {
-    history: Immutable.List<TMindmap>;
+export type THistory = {
+    mindmaps: Immutable.List<TMindmap>[];
     index: number;
 }
