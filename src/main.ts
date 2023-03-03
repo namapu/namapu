@@ -75,8 +75,6 @@ window.onload = () => {
   render();
   }
 
-
-
 function operation(fn: any) {
   // first, make sure that there is no future
   // in the history list. for instance, if the user
@@ -114,23 +112,6 @@ function removeCard(id: string) {
       });
   });
 }
-
-// function render() {
-//   cardsDiv.innerHTML = '';
-//   status.history[status.index].forEach(function(card) {
-//       var elem = cardsDiv.appendChild(document.createElement('div'));
-//       elem.className = 'card';
-//       elem.style.left = card.get('x') + 'px';
-//       elem.style.top = card.get('y') + 'px';
-//       // clicking on a card removes it.
-//       elem.addEventListener('click', function(e) {
-//           removeCard(card.get('id'));
-//           e.stopPropagation();
-//       });
-//   });
-//   undo.disabled = (status.index != 0) ? '' : 'disabled';
-//   redo.disabled = (status.index !== status.history.length - 1) ? '' : 'disabled';
-// }
 
 const setCardLeftTop = (elem: any, card: any) => {
   elem.style.left = card.get('x') + 'px';
@@ -179,14 +160,14 @@ function render() {
 
 let color = 0;
 
-function selectElementContents(el: any) {
-  var range = document.createRange();
-  range.selectNodeContents(el);
-  var sel = window.getSelection();
-  if (sel === null) return;
-  sel.removeAllRanges();
-  sel.addRange(range);
-}
+// function selectElementContents(el: any) {
+//   var range = document.createRange();
+//   range.selectNodeContents(el);
+//   var sel = window.getSelection();
+//   if (sel === null) return;
+//   sel.removeAllRanges();
+//   sel.addRange(range);
+// }
 
 
 const clearHistory = () => {
