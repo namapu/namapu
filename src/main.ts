@@ -52,7 +52,7 @@ window.onload = () => {
     const obj = immutable.toJS(); 
     const json = JSON.stringify(obj);
     saveDoc('test', json);
-    console.log(json);
+    // console.log(json);
   });
 
   // load 
@@ -61,10 +61,11 @@ window.onload = () => {
     console.log(json);
     if (json === null) return null;
     const obj = JSON.parse(json);
-    console.log(obj);
+    // console.log(obj);
     clearHistory();
     history.mindmaps[history.index] = Immutable.fromJS(obj);
     render();
+    return true;
   });
 
   newButton.addEventListener('click', function() {
@@ -97,7 +98,7 @@ function operation(fn: any) {
   render();
 }
 
-function addCard(x: number, y: number, color: number, name: string, id: string) {
+function addCard(x: number, y: number, color: number, name: string, id: number) {
   operation(function(data: any) {
       return data.push(Immutable.Map({
           x: x, y: y, color: color, name: name, id: id
@@ -105,13 +106,13 @@ function addCard(x: number, y: number, color: number, name: string, id: string) 
   });
 }
 
-function removeCard(id: string) {
-  operation(function(data: any) {
-      return data.filter(function(card: any) {
-          return card.get('id') !== id;
-      });
-  });
-}
+// function removeCard(id: string) {
+//   operation(function(data: any) {
+//       return data.filter(function(card: any) {
+//           return card.get('id') !== id;
+//       });
+//   });
+// }
 
 const setCardLeftTop = (elem: any, card: any) => {
   elem.style.left = card.get('x') + 'px';
