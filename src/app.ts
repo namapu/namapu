@@ -1,5 +1,6 @@
 // import CardItem from './card-item';
 import Nav from './nav';
+import { TAppState } from './types';
 // import { THistory } from './doc';
 // import Immutable from 'immutable';
 
@@ -7,13 +8,13 @@ export default class App {
   readonly appElem: HTMLDivElement;
   readonly navElem: HTMLDivElement;
   readonly nav: Nav;
-  // readonly history: THistory;
+  readonly appState: TAppState;
 
-  constructor(appElem: HTMLDivElement, navElem: HTMLDivElement) {
+  constructor(appState: TAppState, appElem: HTMLDivElement, navElem: HTMLDivElement) {
+    this.appState = appState;
     this.appElem = appElem;
     this.navElem = navElem;
-    this.nav = new Nav(this.navElem);
-    // this.history = { mindmaps: [Immutable.List([])], index: 0 };
+    this.nav = new Nav(this.appState, this.navElem);
     this.bindEvents();
   }
 /*

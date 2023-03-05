@@ -1,9 +1,12 @@
 import './style.css'
 import App from './app';
-import { THistory } from './doc';
+import { TAppState, THistory, UiState } from './types';
 import Immutable from 'immutable';
 
-const history: THistory = { mindmaps: [Immutable.List([])], index: 0 };
+const uiState: UiState = { };
+const history: THistory = { states: [Immutable.List([])], index: 0 };
+const appState: TAppState = { history, uiState }
+
 let cardsDiv : HTMLDivElement;
 let undoButton : HTMLButtonElement; 
 let redoButton : HTMLButtonElement; 
@@ -14,8 +17,9 @@ let newButton : HTMLButtonElement;
 window.onload = () => {
   const appElem = document.querySelector<HTMLDivElement>('#app') as HTMLDivElement;
   const navElem = document.querySelector<HTMLDivElement>('#nav') as HTMLDivElement;
-  let app = new App(appElem, navElem);
+  let app = new App(appState, appElem, navElem);
   app.render();
+
   cardsDiv = appElem; //document.getElementById('app') as HTMLButtonElement;
   undoButton = document.getElementById('btn-undo') as HTMLButtonElement;
   redoButton = document.getElementById('btn-redo') as HTMLButtonElement;
@@ -23,39 +27,28 @@ window.onload = () => {
   saveButton = document.getElementById('btn-save') as HTMLButtonElement;
   newButton = document.getElementById('btn-new') as HTMLButtonElement;
 
-  // clicking the background adds a card
-  cardsDiv.addEventListener('click', function(e) {
+  cardsDiv.addEventListener('dblclick', function(e) {
     const title = "";
     const id = +new Date();
     addCard(e.pageX, e.pageY, color, title, id);
     color = color + 20;
     // setFocus(elCard);
   });
-
-  // clicking undo goes back in time, unless
-  // there is no history left.
   undoButton.addEventListener('click', function() {
       if (history.index > 0) history.index--;
       render();
   });
-
-  // clicking redo goes forward in time, unless
-  // there is no future left.
   redoButton.addEventListener('click', function() {
-      if (history.index < history.mindmaps.length) history.index++;
+      if (history.index < history.states.length) history.index++;
       render();
   });
-
-  // save 
   saveButton.addEventListener('click', function() {
-    const immutable = history.mindmaps[history.index];
+    const immutable = history.states[history.index];
     const obj = immutable.toJS(); 
     const json = JSON.stringify(obj);
     saveDoc('test', json);
     // console.log(json);
   });
-
-  // load 
   loadButton.addEventListener('click', function() {
     const json = loadDoc('test');
     console.log(json);
@@ -63,11 +56,10 @@ window.onload = () => {
     const obj = JSON.parse(json);
     // console.log(obj);
     clearHistory();
-    history.mindmaps[history.index] = Immutable.fromJS(obj);
+    history.states[history.index] = Immutable.fromJS(obj);
     render();
     return true;
   });
-
   newButton.addEventListener('click', function() {
     clearHistory();
     render();
@@ -77,24 +69,14 @@ window.onload = () => {
   }
 
 function operation(fn: any) {
-  // first, make sure that there is no future
-  // in the history list. for instance, if the user
-  // renders something, clicks undo, and then
-  // renders something else, we need to dispose of the
-  // future state
+  // first, make sure that there is no future in the history list. For instance, if the user renders something, 
+  // clicks undo, and then renders something else, we need to dispose of the future state
   const index = history.index;
-  history.mindmaps = history.mindmaps.slice(0, index + 1);
-  
-  // create a new version of the data by applying
-  // a given function to the current head
-  const newVersion = fn(history.mindmaps[index]);
-  
-  // add the new version to the history list and increment
-  // the index to match
-  history.mindmaps.push(newVersion);
+  history.states = history.states.slice(0, index + 1);
+  const newVersion = fn(history.states[index]); // create a new version of the data by applying a given function to the current head
+  history.states.push(newVersion); // add the new version to the history list and increment the index to match
   history.index = index + 1;
-  
-  // rerender the cards
+
   render();
 }
 
@@ -151,12 +133,12 @@ function render() {
     if (redoButton === null) return;
 
     cardsDiv.innerHTML = '';
-    history.mindmaps[history.index].forEach(function(card) {
+    history.states[history.index].forEach(function(card) {
         var elem = cardsDiv.appendChild(document.createElement('div'));
         setCard(elem, card);
     });
     undoButton.disabled = (history.index != 0) ? false : true;
-    redoButton.disabled = (history.index !== history.mindmaps.length - 1) ? false : true;
+    redoButton.disabled = (history.index !== history.states.length - 1) ? false : true;
 }
 
 let color = 0;
@@ -172,7 +154,7 @@ let color = 0;
 
 
 const clearHistory = () => {
-  history.mindmaps = [Immutable.List([])];
+  history.states = [Immutable.List([])];
   history.index = 0;
 }
 

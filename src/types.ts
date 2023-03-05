@@ -15,13 +15,22 @@ export type TFrame = {
     id:string;
 }
 
-export type TMindmap = {
+export type TState = {
     cards: Array<TCard>;
     conns: Array<TConn>;
     frames: Array<TFrame>
 }
 
 export type THistory = {
-    mindmaps: Immutable.List<TMindmap>[];
+    states: Immutable.List<TState>[];
     index: number;
+}
+
+export type UiState = {
+
+}
+
+export type TAppState = {
+    history: THistory;
+    uiState: UiState;
 }

@@ -1,12 +1,15 @@
 // import AppState from './app-state';
 // import Doc from "./doc";
 
+import { TAppState } from "./types";
+
 export default
 class Nav {
   readonly navElem: HTMLElement;
-  // readonly doc: Doc;
+  readonly appState: TAppState;
 
-  constructor(navElem: HTMLElement) {
+  constructor(appState: TAppState, navElem: HTMLElement) {
+    this.appState = appState;
     this.navElem = navElem;
     // this.doc = doc;
   }
