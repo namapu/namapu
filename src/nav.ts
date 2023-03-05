@@ -11,7 +11,6 @@ class Nav {
   constructor(appState: TAppState, navElem: HTMLElement) {
     this.appState = appState;
     this.navElem = navElem;
-    // this.doc = doc;
   }
  
   render() {
@@ -59,8 +58,11 @@ class Nav {
   }
 
   private handleClick_Undo = () => {
-    console.log("handleClick_Undo");
-  }
+    // console.log("handleClick_Undo");
+    const history = this.appState.history;
+    if (history.index > 0) history.index--;
+    render();
+}
 
   private handleClick_Redo = () => {
     console.log("handleClick_Redo");

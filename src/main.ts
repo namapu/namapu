@@ -7,6 +7,7 @@ const uiState: UiState = { };
 const history: THistory = { states: [Immutable.List([])], index: 0 };
 const appState: TAppState = { history, uiState }
 
+
 let cardsDiv : HTMLDivElement;
 let undoButton : HTMLButtonElement; 
 let redoButton : HTMLButtonElement; 
