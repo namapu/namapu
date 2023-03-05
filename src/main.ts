@@ -32,7 +32,7 @@ window.onload = () => {
     const title = "";
     const id = +new Date();
     addCard(e.pageX, e.pageY, color, title, id);
-    color = color + 20;
+    // color = color + 20;
     // setFocus(elCard);
   });
   undoButton.addEventListener('click', function() {
@@ -103,8 +103,8 @@ const setCardLeftTop = (elem: any, card: any) => {
 }
 
 const setCardColor = (elem: any, card: any) => {
-  const color = card.get('color'); 
-  elem.style.backgroundColor = `hsl(${color} 99% 80%`;
+  // const color = card.get('color'); 
+  // elem.style.backgroundColor = `hsl(${color} 99% 80%`;
   // elem.style.color = `hsl(${color} 99% 0%`;
 }
 
