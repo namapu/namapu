@@ -26,11 +26,11 @@ export type THistory = {
     index: number;
 }
 
-export type UiState = {
+export type TUIState = {
 
 }
 
 export type TAppState = {
     history: THistory;
-    uiState: UiState;
+    uiState: TUIState;
 }

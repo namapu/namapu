@@ -1,10 +1,183 @@
-import './style.css'
+import Immutable from 'immutable';
+import {v4 as uuidv4} from 'uuid';
+
+export enum ItemType {
+    UNDEF = 0,
+    CARD,
+    CONN,
+    FRAME,
+};
+
+const appState = {
+    history: Immutable.List([Immutable.List([])]),
+    position: 0,
+}
+
+function operation(apst: any, fn: any) {
+    apst.history = apst.history.slice(0, apst.position + 1);
+    var newVersion = fn(apst.history[apst.position]);
+    apst.history.push(newVersion);
+    apst.position++;
+    // draw();
+}
+
+// here are our two operations: addDot is what
+// you trigger by clicking the blank
+function addItem(apst: any, item: any) {
+    operation(apst, function (data: any) {
+        //const item = Immutable.Map({ id: id, title: "hello", x: 10, y: 10, w: 30, h: 30 });
+        return data.push(Immutable.Map(item));
+    });
+    // console.log("add: ", item);
+}
+
+export function addCard(apst: any, id: string, title: string, x: number, y: number, w: number, h: number) {
+    addItem(apst, { id: id, type: ItemType.CARD, title: title, x: x, y: y, w: w, h: h });
+}
+
+export function addConn(apst: any, id: string, title: string, x: number, y: number, w: number, h: number) {
+    addItem(apst, { id: id, type: ItemType.CONN, title: title, x: x, y: y, w: w, h: h });
+}
+
+export function addFrame(apst: any, id: string, title: string, x: number, y: number, w: number, h: number) {
+    addItem(apst, { id: id, type: ItemType.FRAME, title: title, x: x, y: y, w: w, h: h });
+}
+
+
+export function removeItem(appst: any, id: string) {
+    operation(appst, function (data: any) {
+        return data.filter(function (item: any) {
+            return item.get('id') !== id;
+        });
+    });
+    // console.log("delete: ", id);
+}
+
+export function undo(apst: any) {
+    if (apst.position > 0)
+        apst.position--;
+    // console.log("Undo");
+};
+
+export function redo(apst: any) {
+    if (apst.position < apst.history.length)
+        apst.position++;
+    // console.log("Redo");
+};
+
+function render(apst: any) {
+    // dots.innerHTML = '';
+    const out: Array<string> = [];
+    apst.history[apst.position].forEach(function (item: any) {
+        out.push(item);
+    });
+    // console.log(out.toString());
+    // undo.disabled = (historyposition != 0) ? '' : 'disabled';
+    // redo.disabled = (historyposition !== myHistory.length - 1) ? '' : 'disabled';
+}
+
+console.log("elapsed time: start");
+const N = 10;
+var startTime = performance.now();
+    // for (let i = 1; i < N; i++)
+    // {
+    //     addCard(appState2, Number(i).toString(), "hello1", 10, 10, 30, 30);
+    //     // console.log("added card");
+    // }
+    // for (let i = N-1; i > 0; i--)
+    // {
+    //     // removeItem(appState2, Number(i).toString());
+    // }
+    // let elapsed = new Date().getTime() - start;
+    type Item = {
+      id: string;
+      type: ItemType;
+      title: string;
+    }
+    let map = new Map<string, Item>();
+    for (let i = 0; i < N; i++) {
+      const uuid = uuidv4();
+      map.set(uuid.toString(), {id: uuid,  type: ItemType.CARD, title: "hello"});
+    }
+
+    console.log("map size: ", map.size);
+
+    map.forEach((value: Item, key: string) => {
+      console.log(key, value);
+    });    
+
+    map.forEach((value: Item, key: string) => {
+      value;
+      map.delete(key);
+    });    
+
+    for (let i = N - 1; i >= 0; i--) {
+      map.delete(i.toString());
+    }
+
+    console.log("map size: ", map.size);
+    
+    var endTime = performance.now();
+    let elapsed = endTime - startTime;
+    console.log("map size: ", map.size);
+    console.log("elapsed time: ", elapsed, "msecs");
+
+
+///====================
+
+// addCard(appState, "1", "hello", 10, 10, 30, 30);
+// render(appState);
+
+// addItem(appState, { id: "2", type: ItemType.CARD, title: "hello", x: 10, y: 10, w: 30, h: 30 });
+// addItem(appState, { id: "3", type: ItemType.CARD, title: "hello", x: 10, y: 10, w: 30, h: 30 });
+// addItem(appState, { id: "4", type: ItemType.CARD, title: "hello", x: 10, y: 10, w: 30, h: 30 });
+// render(appState);
+
+// removeItem(appState, "2");
+// render(appState);
+
+// addItem(appState, { id: "5", type: ItemType.CARD, title: "hello", x: 10, y: 10, w: 30, h: 30 });
+// render(appState);
+
+// undo(appState);
+// undo(appState);
+// render(appState);
+
+// redo(appState);
+// render(appState);
+
+/*
+
+function renderCard(id: number) {
+  // if (cardsDiv === null) return;
+  // if (undoButton === null) return;
+  // if (redoButton === null) return;
+
+  // cardsDiv.innerHTML = '';
+  const states = appState.history.states;
+  const position = appState.history.position;
+  const state : TState = states[position] as TState;
+  const cards = state.cards;
+  state.forEach(function(card) {
+      const c: TCard = state.cards;
+      if (card.id === id) {
+        console.log("card: " + id);
+        // var elem = cardsDiv.appendChild(document.createElement('div'));
+        // setCard(elem, card);
+      }
+  });
+  // undoButton.disabled = (history.position != 0) ? false : true;
+  // redoButton.disabled = (history.position !== history.states.length - 1) ? false : true;
+}
+*/
+
+/*
 import App from './app';
-import { TAppState, THistory, UiState } from './types';
+import { TAppState, THistory, UiState as TUiState } from './types';
 import Immutable from 'immutable';
 
-const uiState: UiState = { };
-const history: THistory = { states: [Immutable.List([])], index: 0 };
+const uiState: TUiState = { };
+const history: THistory = { states: [Immutable.List([])], position: 0 };
 const appState: TAppState = { history, uiState }
 
 
@@ -36,15 +209,15 @@ window.onload = () => {
     // setFocus(elCard);
   });
   undoButton.addEventListener('click', function() {
-      if (history.index > 0) history.index--;
+      if (history.position > 0) history.position--;
       render();
   });
   redoButton.addEventListener('click', function() {
-      if (history.index < history.states.length) history.index++;
+      if (history.position < history.states.length) history.position++;
       render();
   });
   saveButton.addEventListener('click', function() {
-    const immutable = history.states[history.index];
+    const immutable = history.states[history.position];
     const obj = immutable.toJS(); 
     const json = JSON.stringify(obj);
     saveDoc('test', json);
@@ -57,7 +230,7 @@ window.onload = () => {
     const obj = JSON.parse(json);
     // console.log(obj);
     clearHistory();
-    history.states[history.index] = Immutable.fromJS(obj);
+    history.states[history.position] = Immutable.fromJS(obj);
     render();
     return true;
   });
@@ -72,11 +245,11 @@ window.onload = () => {
 function operation(fn: any) {
   // first, make sure that there is no future in the history list. For instance, if the user renders something, 
   // clicks undo, and then renders something else, we need to dispose of the future state
-  const index = history.index;
-  history.states = history.states.slice(0, index + 1);
-  const newVersion = fn(history.states[index]); // create a new version of the data by applying a given function to the current head
-  history.states.push(newVersion); // add the new version to the history list and increment the index to match
-  history.index = index + 1;
+  const position = history.position;
+  history.states = history.states.slice(0, position + 1);
+  const newVersion = fn(history.states[position]); // create a new version of the data by applying a given function to the current head
+  history.states.push(newVersion); // add the new version to the history list and increment the position to match
+  history.position = position + 1;
 
   render();
 }
@@ -134,12 +307,12 @@ function render() {
     if (redoButton === null) return;
 
     cardsDiv.innerHTML = '';
-    history.states[history.index].forEach(function(card) {
+    history.states[history.position].forEach(function(card) {
         var elem = cardsDiv.appendChild(document.createElement('div'));
         setCard(elem, card);
     });
-    undoButton.disabled = (history.index != 0) ? false : true;
-    redoButton.disabled = (history.index !== history.states.length - 1) ? false : true;
+    undoButton.disabled = (history.position != 0) ? false : true;
+    redoButton.disabled = (history.position !== history.states.length - 1) ? false : true;
 }
 
 let color = 0;
@@ -156,7 +329,7 @@ let color = 0;
 
 const clearHistory = () => {
   history.states = [Immutable.List([])];
-  history.index = 0;
+  history.position = 0;
 }
 
 const saveDoc = (name: string, data: any) => {
@@ -167,3 +340,4 @@ const loadDoc = (name: string) => {
    return localStorage.getItem(name);
 }
 
+*/
